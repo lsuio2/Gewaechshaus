@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Greenhouse</title>
+</head>
+<body>
+  <h1>Greenhouse status</h1>
+  <ul>
+    <li>Temperature: {{ env.temperature }} °C</li>
+    <li>Soil moisture: {{ env.soil_moisture }} %</li>
+    <li>Flap state: {{ env.flap }}</li>
+    <li>Pump on: {{ env.pump }}</li>
+    <li>Light on: {{ env.light }}</li>
+  </ul>
+
+  <h2>Configuration</h2>
+  <form method="post">
+    <label>Max temperature:
+      <input type="number" step="0.1" name="temperature_max" value="{{ config.thresholds.temperature_max }}">
+    </label><br>
+    <label>Min soil moisture:
+      <input type="number" step="0.1" name="soil_moisture_min" value="{{ config.thresholds.soil_moisture_min }}">
+    </label><br>
+    <label>Light start:
+      <input type="time" name="light_start" value="{{ config.light_schedule.start }}">
+    </label><br>
+    <label>Light end:
+      <input type="time" name="light_end" value="{{ config.light_schedule.end }}">
+    </label><br>
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>
