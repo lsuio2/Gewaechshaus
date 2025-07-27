@@ -1,0 +1,7 @@
+# Configuration for greenhouse system
+thresholds:
+  temperature_max: 30.0      # Celsius
+  soil_moisture_min: 30.0    # percent
+light_schedule:
+  start: "07:00"             # HH:MM 24h format
+  end: "19:00"
