@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, Response, stream_with_context
 from pathlib import Path
 import yaml
+import json
+import time
 
 from logic import decision_engine
 
@@ -16,6 +18,19 @@ def load_config():
 def save_config(data):
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         yaml.safe_dump(data, f)
+
+
+@app.route("/stream")
+def stream():
+    """Stream environment data every 5 seconds using Server-Sent Events."""
+
+    def event_stream():
+        while True:
+            env = decision_engine.check_environment()
+            yield f"data: {json.dumps(env)}\n\n"
+            time.sleep(5)
+
+    return Response(stream_with_context(event_stream()), mimetype="text/event-stream")
 
 
 @app.route("/", methods=["GET", "POST"])

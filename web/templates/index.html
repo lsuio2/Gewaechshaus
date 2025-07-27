@@ -7,11 +7,11 @@
 <body>
   <h1>Greenhouse status</h1>
   <ul>
-    <li>Temperature: {{ env.temperature }} °C</li>
-    <li>Soil moisture: {{ env.soil_moisture }} %</li>
-    <li>Flap state: {{ env.flap }}</li>
-    <li>Pump on: {{ env.pump }}</li>
-    <li>Light on: {{ env.light }}</li>
+    <li>Temperature: <span id="temperature">{{ env.temperature }} °C</span></li>
+    <li>Soil moisture: <span id="soil">{{ env.soil_moisture }} %</span></li>
+    <li>Flap state: <span id="flap">{{ env.flap }}</span></li>
+    <li>Pump on: <span id="pump">{{ env.pump }}</span></li>
+    <li>Light on: <span id="light">{{ env.light }}</span></li>
   </ul>
 
   <h2>Configuration</h2>
@@ -30,5 +30,16 @@
     </label><br>
     <button type="submit">Save</button>
   </form>
+  <script>
+    const evtSource = new EventSource('/stream');
+    evtSource.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      document.getElementById('temperature').textContent = data.temperature + ' \u00B0C';
+      document.getElementById('soil').textContent = data.soil_moisture + ' %';
+      document.getElementById('flap').textContent = data.flap;
+      document.getElementById('pump').textContent = data.pump;
+      document.getElementById('light').textContent = data.light;
+    };
+  </script>
 </body>
 </html>
